@@ -7,11 +7,14 @@ using Random = UnityEngine.Random;
 
 public class CardController : MonoBehaviour
 {
+    public static CardController instance { get; private set; }
     public CardSpawnArea spawnArea;
     [HideInInspector] public List<Vector3> randomSpawnPoints = new List<Vector3>();
     [SerializeField] private List<CardProperties> cardPropertiesList = new List<CardProperties>();
     [SerializeField] private List<GameObject> cardPrefabs = new List<GameObject>();
     private Object[] cardDatas;
+
+    void Awake() => instance = this;
 
     private void Start()
     {
