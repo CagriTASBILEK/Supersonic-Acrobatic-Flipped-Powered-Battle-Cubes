@@ -69,6 +69,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da73c7c2b5d589248b49e4dca11dce4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardEntry:
+    frontSprite: {fileID: 7620403389825192034}
 --- !u!1 &4678100119208062116
 GameObject:
   m_ObjectHideFlags: 0

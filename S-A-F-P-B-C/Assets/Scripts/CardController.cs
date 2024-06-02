@@ -8,10 +8,11 @@ using Random = UnityEngine.Random;
 public class CardController : MonoBehaviour
 {
     public CardSpawnArea spawnArea;
-    [HideInInspector]public List<Vector3> randomSpawnPoints = new List<Vector3>();
+    [HideInInspector] public List<Vector3> randomSpawnPoints = new List<Vector3>();
     [SerializeField] private List<CardProperties> cardPropertiesList = new List<CardProperties>();
     [SerializeField] private List<GameObject> cardPrefabs = new List<GameObject>();
     private Object[] cardDatas;
+
     private void Start()
     {
         CreateCards();
@@ -19,14 +20,24 @@ public class CardController : MonoBehaviour
 
     private void CreateCards()
     {
-        cardDatas = Resources.LoadAll("CardDatas/" , typeof(CardProperties));
+        cardDatas = Resources.LoadAll("CardDatas/", typeof(CardProperties));
         foreach (var cardsData in cardDatas)
         {
             cardPropertiesList.Add(cardsData as CardProperties);
+            cardPropertiesList.Add(cardsData as CardProperties);
         }
+
+        int totalCells = (int)(spawnArea.width * spawnArea.depth);
+        while (cardPropertiesList.Count < totalCells)
+        {
+            int randomIndex = Random.Range(0, cardDatas.Length);
+            cardPropertiesList.Add(cardDatas[randomIndex] as CardProperties);
+            cardPropertiesList.Add(cardDatas[randomIndex] as CardProperties);
+        }
+        
         SpawnCards();
     }
-    
+
     private void SpawnCards()
     {
         transform.SetParent(transform);
@@ -35,33 +46,44 @@ public class CardController : MonoBehaviour
             foreach (var point in CardSpawnGridPoints())
             {
                 randomSpawnPoints.Add(point);
-            }   
+            }
         }
+
         Shuffle(randomSpawnPoints);
         int i = 0;
         while (i < randomSpawnPoints.Count)
-        { 
+        {
             Vector3 spawnPosition = randomSpawnPoints[i];
-           GameObject cardPrefab = Instantiate(cardPropertiesList[i].cardPrefab, spawnPosition, Quaternion.Euler(new Vector3(90,0,0)),
+            GameObject cardPrefab = Instantiate(cardPropertiesList[i].cardPrefab, spawnPosition,
+                Quaternion.Euler(new Vector3(90, 0, 0)),
                 transform);
-           cardPrefab.name = cardPropertiesList[i].name;
-           cardPrefabs.Add(cardPrefab);
+            cardPrefab.name = cardPropertiesList[i].name;
+            var cardEntry = cardPrefab.GetComponent<CardEntry>().cardEntry;
+            cardEntry.frontSprite.sprite = cardPropertiesList[i].cardSprite;
+            cardEntry.cardIndex = cardPropertiesList[i].cardIndex;
+            cardPrefabs.Add(cardPrefab);
             i++;
         }
     }
-    
+
     IEnumerable<Vector3> CardSpawnGridPoints()
     {
         Vector3 spawnAreaPosition = transform.position + spawnArea.spawnPoint;
-        for (int x = 0; x <spawnArea.width; x++)
+        if (spawnArea.width * spawnArea.depth % 2 != 0)
+        {
+            Debug.LogError("card size must be double!");
+            yield break;
+        }
+
+        for (int x = 0; x < spawnArea.width; x++)
         {
             for (int z = 0; z < spawnArea.depth; z++)
             {
-                yield return new Vector3(spawnAreaPosition.x+x, spawnAreaPosition.y, spawnAreaPosition.z+z);
+                yield return new Vector3(spawnAreaPosition.x + x, spawnAreaPosition.y, spawnAreaPosition.z + z);
             }
         }
     }
-    
+
     void Shuffle<T>(List<T> inputList)
     {
         for (int i = 0; i < inputList.Count - 1; i++)
@@ -76,10 +98,11 @@ public class CardController : MonoBehaviour
     [Serializable]
     public struct CardSpawnArea
     {
-        [SerializeField] internal Vector3 spawnPoint; 
+        [SerializeField] internal Vector3 spawnPoint;
         [SerializeField] internal float width;
         [SerializeField] internal float depth;
     }
+
     private void OnDrawGizmos()
     {
 #if UNITY_EDITOR

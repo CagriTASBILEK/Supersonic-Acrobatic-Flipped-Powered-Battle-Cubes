@@ -1,18 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CardEntry : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public _CardEntry cardEntry;
+    
+    [Serializable]
+    public class _CardEntry
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        [SerializeField] public SpriteRenderer frontSprite;
+        [SerializeField] public int cardIndex;
     }
 }
