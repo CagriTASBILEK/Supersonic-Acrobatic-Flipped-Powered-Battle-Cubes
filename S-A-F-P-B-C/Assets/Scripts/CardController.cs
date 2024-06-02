@@ -129,7 +129,7 @@ public class CardController : MonoBehaviour
 
             if (cardPrefabs.Count <= 0)
             {
-                Debug.Log("You WIN!!!");
+                UIManager.instance.winPopup.SetActive(true);
             }
         }
         else
