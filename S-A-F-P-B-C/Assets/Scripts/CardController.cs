@@ -16,8 +16,10 @@ public class CardController : MonoBehaviour
     private Object[] cardDatas;
     private static readonly int Open = Animator.StringToHash("CardOpen");
     private static readonly int Close = Animator.StringToHash("CardClose");
-    [HideInInspector]public int comboCount = 0;
-        
+    [HideInInspector] public int turnCount = 0;
+    [HideInInspector] public int matchCount = 0;
+    [HideInInspector] public int comboCount = 0;
+
     void Awake() => instance = this;
 
     private void Start()
@@ -44,7 +46,7 @@ public class CardController : MonoBehaviour
             cardPropertiesList.Add(cardDatas[randomIndex] as CardProperties);
             cardPropertiesList.Add(cardDatas[randomIndex] as CardProperties);
         }
-        
+
         SpawnCards();
     }
 
@@ -91,31 +93,34 @@ public class CardController : MonoBehaviour
         {
             return;
         }
-        
+
         selectedCards.Add(selectedCard);
         var cardAnimator = selectedCard.gameObject.GetComponent<Animator>();
-        
+
         cardAnimator.SetTrigger(Open);
-        
+
         if (selectedCards.Count == 2)
         {
-          StartCoroutine( CheckMatch()); 
+            turnCount++;
+            UIManager.instance.turnCount.text = turnCount.ToString();
+            StartCoroutine(CheckMatch());
         }
-    }    
-    
-    
+    }
+
+
     private IEnumerator CheckMatch()
     {
         yield return new WaitForSecondsRealtime(0.5f);
         if (selectedCards[0].cardEntry.cardIndex == selectedCards[1].cardEntry.cardIndex)
         {
-            
+            matchCount++;
             comboCount++;
-            PlayerData.Point += (selectedCards[0].cardEntry.cardPoint)*comboCount;
+            PlayerData.Point += (selectedCards[0].cardEntry.cardPoint) * comboCount;
             UIManager.instance.pointCount.text = PlayerData.Point.ToString();
             UIManager.instance.comboCount.text = comboCount.ToString();
-            Debug.Log("Match found!"+selectedCards[0].cardEntry.cardPoint+"       "+ comboCount );
-            
+            UIManager.instance.matchCount.text = matchCount.ToString();
+            Debug.Log("Match found!" + selectedCards[0].cardEntry.cardPoint + "       " + comboCount);
+
             foreach (var selectedCard in selectedCards)
             {
                 cardPrefabs.Remove(selectedCard);
@@ -137,8 +142,8 @@ public class CardController : MonoBehaviour
                 selectedCard.gameObject.GetComponent<Animator>().SetTrigger(Close);
             }
         }
+
         selectedCards.Clear();
-        
     }
 
 

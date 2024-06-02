@@ -10,17 +10,23 @@ public class GameManager : MonoBehaviour
 
     public void RetryGame()
     {
-        var cardPrefabs = new List<CardEntry>(CardController.instance.cardPrefabs);
+        var cardController = CardController.instance;
+        var uiManager = UIManager.instance;
+        var cardPrefabs = new List<CardEntry>(cardController.cardPrefabs);
 
         foreach (var instanceCardPrefab in cardPrefabs)
         {
-            CardController.instance.cardPrefabs.Remove(instanceCardPrefab);
+            cardController.cardPrefabs.Remove(instanceCardPrefab);
             Destroy(instanceCardPrefab.gameObject);
         }
-        CardController.instance.comboCount = 0;
-        UIManager.instance.comboCount.text = CardController.instance.comboCount.ToString();
-        
-        StartCoroutine(CardController.instance.SpawnCardsEnumerator());
-    }
 
+        cardController.matchCount = 0;
+        cardController.turnCount = 0;
+        cardController.comboCount = 0;
+        uiManager.comboCount.text = cardController.comboCount.ToString();
+        uiManager.matchCount.text = cardController.matchCount.ToString();
+        uiManager.turnCount.text = cardController.turnCount.ToString();
+
+        StartCoroutine(cardController.SpawnCardsEnumerator());
+    }
 }

@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     public static UIManager instance { get; private set; }
     public TextMeshProUGUI pointCount;
     public TextMeshProUGUI comboCount;
+    public TextMeshProUGUI turnCount;
+    public TextMeshProUGUI matchCount;
     public Button retryButton;
     
     void Awake() => instance = this;
