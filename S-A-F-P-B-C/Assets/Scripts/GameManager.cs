@@ -35,21 +35,17 @@ public class GameManager : MonoBehaviour
     private void WinGameLevelControl()
     {
         var cardController = CardController.instance;
-
-        if (cardController.spawnArea.depth % 2 == 0)
+        
+        if (cardController.spawnArea.depth % 2 == 0 && cardController.spawnArea.width % 2 == 0)
         {
             cardController.spawnArea.depth++;
         }
-        else if (cardController.spawnArea.width % 2 == 0)
+        else if (cardController.spawnArea.depth % 2 == 0 || cardController.spawnArea.width % 2 == 0)
         {
             cardController.spawnArea.width++;
         }
-        else
-        {
-            cardController.spawnArea.depth++;
-        }
-
-        if (cardController.spawnArea.width * cardController.spawnArea.depth % 2 != 0)
+        
+        if ((cardController.spawnArea.width * cardController.spawnArea.depth) % 2 != 0)
         {
             cardController.spawnArea.depth++; 
         }
