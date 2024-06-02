@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public static CameraController instance { get; private set; }
+    void Awake() => instance = this;
+    
     public Camera mainCamera;
     void Start()
     {
+        CameraTransformControl();
+    }
+
+    public void CameraTransformControl()
+    {
         mainCamera.transform.localPosition = CalculateGridCenter();
     }
+    
     Vector3 CalculateGridCenter()
     {
         var cardController = CardController.instance;

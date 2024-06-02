@@ -12,7 +12,7 @@ public class CardController : MonoBehaviour
     [HideInInspector] public List<Vector3> randomSpawnPoints = new List<Vector3>();
     [SerializeField] private List<CardProperties> cardPropertiesList = new List<CardProperties>();
     public List<CardEntry> cardPrefabs = new List<CardEntry>();
-    [SerializeField] private List<CardEntry> selectedCards = new List<CardEntry>();
+    [SerializeField] public List<CardEntry> selectedCards = new List<CardEntry>();
     private Object[] cardDatas;
     private static readonly int Open = Animator.StringToHash("CardOpen");
     private static readonly int Close = Animator.StringToHash("CardClose");
@@ -55,7 +55,8 @@ public class CardController : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(1);
         selectedCards.Clear();
-        SpawnCards();
+        randomSpawnPoints.Clear();
+        CreateCards();
     }
 
     private void SpawnCards()
@@ -84,6 +85,15 @@ public class CardController : MonoBehaviour
             cardEntry.cardEntry.cardPoint = cardPropertiesList[i].cardPoint;
             cardPrefabs.Add(cardEntry);
             i++;
+        }
+
+        if (spawnArea.width >= spawnArea.depth)
+        {
+            foreach (var cardControllerPrefab in cardPrefabs)
+            {
+                cardControllerPrefab.cardEntry.frontSprite.transform.localRotation =
+                    Quaternion.Euler(new Vector3(0, 0, 90));
+            }
         }
     }
 

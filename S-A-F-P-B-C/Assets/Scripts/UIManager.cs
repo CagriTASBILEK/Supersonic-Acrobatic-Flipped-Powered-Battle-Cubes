@@ -33,6 +33,6 @@ public class UIManager : MonoBehaviour
     private void WinGame()
     {
         winPopup.SetActive(false);
-        GameManager.instance.RetryGame();
+        GameManager.instance.WinGame();
     }
 }

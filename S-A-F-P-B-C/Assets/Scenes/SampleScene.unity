@@ -1835,7 +1835,7 @@ MonoBehaviour:
   spawnArea:
     spawnPoint: {x: 0, y: 0, z: 0}
     width: 2
-    depth: 4
+    depth: 2
   randomSpawnPoints: []
   cardPropertiesList: []
   cardPrefabs: []

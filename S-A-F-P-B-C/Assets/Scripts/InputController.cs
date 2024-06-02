@@ -8,7 +8,7 @@ public class InputController : MonoBehaviour
     public Camera mainCamera;
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && CardController.instance.selectedCards.Count != 2)
         {
             if (EventSystem.current.currentSelectedGameObject)
                 if (EventSystem.current.currentSelectedGameObject.layer == 5)
