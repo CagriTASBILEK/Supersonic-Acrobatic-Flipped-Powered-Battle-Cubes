@@ -19,7 +19,7 @@ public class CardController : MonoBehaviour
     [HideInInspector] public int turnCount = 0;
     [HideInInspector] public int matchCount = 0;
     [HideInInspector] public int comboCount = 0;
-
+    [HideInInspector] public bool isFirst;
     void Awake() => instance = this;
 
     private void Start()
@@ -47,7 +47,7 @@ public class CardController : MonoBehaviour
             cardPropertiesList.Add(cardDatas[randomIndex] as CardProperties);
             cardPropertiesList.Add(cardDatas[randomIndex] as CardProperties);
         }
-
+        isFirst = true;
         SpawnCards();
     }
 
@@ -97,6 +97,30 @@ public class CardController : MonoBehaviour
                     Quaternion.Euler(new Vector3(0, 0, 90));
             }
         }
+
+        if (isFirst)
+        {
+            StartCoroutine(FirstOpenCloseCards());
+        }
+        
+    }
+    public IEnumerator FirstOpenCloseCards()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+        foreach (var cardPrefab in cardPrefabs)
+        {
+            var cardAnimator = cardPrefab.gameObject.GetComponent<Animator>();
+            cardAnimator.SetTrigger(Open);
+        }
+
+        yield return new WaitForSecondsRealtime(2f);
+        
+        foreach (var cardPrefab in cardPrefabs)
+        {
+            var cardAnimator = cardPrefab.gameObject.GetComponent<Animator>();
+            cardAnimator.SetTrigger(Close);
+        }
+        isFirst = false;
     }
 
     public void CardMatchControl(CardEntry selectedCard)
