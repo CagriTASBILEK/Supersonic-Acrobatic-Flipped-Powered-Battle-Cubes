@@ -131,7 +131,6 @@ public class CardController : MonoBehaviour
             UIManager.instance.pointCount.text = PlayerData.Point.ToString();
             UIManager.instance.comboCount.text = comboCount.ToString();
             UIManager.instance.matchCount.text = matchCount.ToString();
-            Debug.Log("Match found!" + selectedCards[0].cardEntry.cardPoint + "       " + comboCount);
             SoundManager.instance.AudioPlay(SoundManager.instance.gameSounds.matchSound);
             foreach (var selectedCard in selectedCards)
             {
@@ -150,7 +149,6 @@ public class CardController : MonoBehaviour
             comboCount = 0;
             UIManager.instance.comboCount.text = comboCount.ToString();
             SoundManager.instance.AudioPlay(SoundManager.instance.gameSounds.missMatchSound);
-            Debug.Log("No match found!");
             foreach (var selectedCard in selectedCards)
             {
                 selectedCard.gameObject.GetComponent<Animator>().SetTrigger(Close);

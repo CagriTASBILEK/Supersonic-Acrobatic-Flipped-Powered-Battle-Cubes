@@ -22,7 +22,6 @@ public class InputController : MonoBehaviour
                 CardEntry card = hit.collider.GetComponent<CardEntry>();
                 if (card != null)
                 {
-                    Debug.Log("Card Name: " + card.cardEntry.cardIndex);
                     CardController.instance.CardMatchControl(card);
                 }
                 else
