@@ -49,8 +49,10 @@ public class GameManager : MonoBehaviour
         {
             cardController.spawnArea.depth++; 
         }
-        
         CameraController.instance.CameraTransformControl();
+        
+        PlayerData.Width = (int)cardController.spawnArea.width;
+        PlayerData.Depth = (int)cardController.spawnArea.depth;
     }
 
     public void RetryGame()

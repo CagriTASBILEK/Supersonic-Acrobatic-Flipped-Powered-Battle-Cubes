@@ -9,4 +9,14 @@ public static class PlayerData
         set => PlayerPrefs.SetInt(nameof(Point), value);
     }
     
+    public static int Width
+    {
+        get => PlayerPrefs.GetInt(nameof(Width), 2);
+        set => PlayerPrefs.SetInt(nameof(Width), value);
+    }
+    public static int Depth
+    {
+        get => PlayerPrefs.GetInt(nameof(Depth), 2);
+        set => PlayerPrefs.SetInt(nameof(Depth), value);
+    }
 }

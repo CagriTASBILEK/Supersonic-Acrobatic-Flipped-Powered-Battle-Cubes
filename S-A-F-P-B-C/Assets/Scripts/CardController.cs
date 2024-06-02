@@ -24,8 +24,9 @@ public class CardController : MonoBehaviour
 
     private void Start()
     {
+        spawnArea.depth = PlayerData.Depth;
+        spawnArea.width = PlayerData.Width;
         CreateCards();
-        PlayerPrefs.DeleteAll();
         UIManager.instance.pointCount.text = PlayerData.Point.ToString();
         UIManager.instance.comboCount.text = comboCount.ToString();
     }
@@ -86,7 +87,8 @@ public class CardController : MonoBehaviour
             cardPrefabs.Add(cardEntry);
             i++;
         }
-
+        
+        CameraController.instance.CameraTransformControl();
         if (spawnArea.width >= spawnArea.depth)
         {
             foreach (var cardControllerPrefab in cardPrefabs)

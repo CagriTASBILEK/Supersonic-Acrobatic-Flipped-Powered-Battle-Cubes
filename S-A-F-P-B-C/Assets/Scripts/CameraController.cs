@@ -8,11 +8,6 @@ public class CameraController : MonoBehaviour
     void Awake() => instance = this;
     
     public Camera mainCamera;
-    void Start()
-    {
-        CameraTransformControl();
-    }
-
     public void CameraTransformControl()
     {
         mainCamera.transform.localPosition = CalculateGridCenter();

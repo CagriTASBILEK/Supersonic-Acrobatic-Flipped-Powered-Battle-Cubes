@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -15,6 +16,7 @@ public class UIManager : MonoBehaviour
     public Button retryButton;
     public Button continueButton;
     public GameObject winPopup;
+    public Button deletePrefs;
     
     void Awake() => instance = this;
 
@@ -23,6 +25,13 @@ public class UIManager : MonoBehaviour
         winPopup.SetActive(false);
         retryButton.onClick.AddListener(RetryGame);
         continueButton.onClick.AddListener(WinGame);
+        deletePrefs.onClick.AddListener(DeletePrefs);
+    }
+
+    private void DeletePrefs()
+    {
+        PlayerPrefs.DeleteAll();
+        SceneManager.LoadScene("SampleScene");
     }
 
     private void RetryGame()
