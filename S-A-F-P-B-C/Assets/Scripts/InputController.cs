@@ -18,6 +18,7 @@ public class InputController : MonoBehaviour
                 if (card != null)
                 {
                     Debug.Log("Card Name: " + card.cardEntry.cardIndex);
+                    CardController.instance.CardMatchControl(card);
                 }
                 else
                 {

@@ -11,7 +11,8 @@ public class CardController : MonoBehaviour
     public CardSpawnArea spawnArea;
     [HideInInspector] public List<Vector3> randomSpawnPoints = new List<Vector3>();
     [SerializeField] private List<CardProperties> cardPropertiesList = new List<CardProperties>();
-    [SerializeField] private List<GameObject> cardPrefabs = new List<GameObject>();
+    [SerializeField] private List<CardEntry> cardPrefabs = new List<CardEntry>();
+    [SerializeField] private List<CardEntry> selectedCards = new List<CardEntry>();
     private Object[] cardDatas;
 
     void Awake() => instance = this;
@@ -61,13 +62,55 @@ public class CardController : MonoBehaviour
                 Quaternion.Euler(new Vector3(90, 0, 0)),
                 transform);
             cardPrefab.name = cardPropertiesList[i].name;
-            var cardEntry = cardPrefab.GetComponent<CardEntry>().cardEntry;
-            cardEntry.frontSprite.sprite = cardPropertiesList[i].cardSprite;
-            cardEntry.cardIndex = cardPropertiesList[i].cardIndex;
-            cardPrefabs.Add(cardPrefab);
+            var cardEntry = cardPrefab.GetComponent<CardEntry>();
+            cardEntry.cardEntry.frontSprite.sprite = cardPropertiesList[i].cardSprite;
+            cardEntry.cardEntry.cardIndex = cardPropertiesList[i].cardIndex;
+            cardPrefabs.Add(cardEntry);
             i++;
         }
     }
+
+    public void CardMatchControl(CardEntry selectedCard)
+    {
+        if (selectedCards.Contains(selectedCard))
+        {
+            return;
+        }
+        
+        selectedCards.Add(selectedCard);
+
+        if (selectedCards.Count == 2)
+        {
+           CheckMatch(); 
+        }
+    }    
+    
+    
+    private void CheckMatch()
+    {
+        if (selectedCards[0].cardEntry.cardIndex == selectedCards[1].cardEntry.cardIndex)
+        {
+            Debug.Log("Match found!");
+           
+            foreach (var selectedCard in selectedCards)
+            {
+                cardPrefabs.Remove(selectedCard);
+                Destroy(selectedCard.gameObject);
+            }
+
+            if (cardPrefabs.Count <= 0)
+            {
+                Debug.Log("You WIN!!!");
+            }
+        }
+        else
+        {
+            Debug.Log("No match found!");
+        }
+        
+        selectedCards.Clear();
+    }
+
 
     IEnumerable<Vector3> CardSpawnGridPoints()
     {

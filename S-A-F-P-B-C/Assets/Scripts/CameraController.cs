@@ -11,7 +11,6 @@ public class CameraController : MonoBehaviour
     }
     Vector3 CalculateGridCenter()
     {
-        Vector3 spawnAreaPosition = Vector3.zero;
         var cardController = CardController.instance;
        
         float gridWidth = cardController.spawnArea.width;
@@ -32,7 +31,7 @@ public class CameraController : MonoBehaviour
         
         Vector3 centerOffset = new Vector3(centerX, cameraHeight, centerZ);
         
-        Vector3 gridCenter = centerOffset + spawnAreaPosition;
+        Vector3 gridCenter = centerOffset;
 
         return gridCenter;
     }
