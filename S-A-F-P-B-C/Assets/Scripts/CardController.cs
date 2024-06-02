@@ -11,12 +11,12 @@ public class CardController : MonoBehaviour
     public CardSpawnArea spawnArea;
     [HideInInspector] public List<Vector3> randomSpawnPoints = new List<Vector3>();
     [SerializeField] private List<CardProperties> cardPropertiesList = new List<CardProperties>();
-    [SerializeField] private List<CardEntry> cardPrefabs = new List<CardEntry>();
+    public List<CardEntry> cardPrefabs = new List<CardEntry>();
     [SerializeField] private List<CardEntry> selectedCards = new List<CardEntry>();
     private Object[] cardDatas;
     private static readonly int Open = Animator.StringToHash("CardOpen");
     private static readonly int Close = Animator.StringToHash("CardClose");
-    private int comboCount = 0;
+    [HideInInspector]public int comboCount = 0;
         
     void Awake() => instance = this;
 
@@ -45,6 +45,14 @@ public class CardController : MonoBehaviour
             cardPropertiesList.Add(cardDatas[randomIndex] as CardProperties);
         }
         
+        SpawnCards();
+    }
+
+
+    public IEnumerator SpawnCardsEnumerator()
+    {
+        yield return new WaitForSecondsRealtime(1);
+        selectedCards.Clear();
         SpawnCards();
     }
 
