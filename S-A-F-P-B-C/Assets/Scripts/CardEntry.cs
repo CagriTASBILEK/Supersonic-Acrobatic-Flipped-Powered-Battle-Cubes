@@ -12,5 +12,6 @@ public class CardEntry : MonoBehaviour
     {
         [SerializeField] public SpriteRenderer frontSprite;
         [SerializeField] public int cardIndex;
+        [SerializeField] public int cardPoint;
     }
 }

@@ -16,12 +16,16 @@ public class CardController : MonoBehaviour
     private Object[] cardDatas;
     private static readonly int Open = Animator.StringToHash("CardOpen");
     private static readonly int Close = Animator.StringToHash("CardClose");
-
+    private int comboCount = 0;
+        
     void Awake() => instance = this;
 
     private void Start()
     {
         CreateCards();
+        PlayerPrefs.DeleteAll();
+        UIManager.instance.pointCount.text = PlayerData.Point.ToString();
+        UIManager.instance.comboCount.text = comboCount.ToString();
     }
 
     private void CreateCards()
@@ -67,6 +71,7 @@ public class CardController : MonoBehaviour
             var cardEntry = cardPrefab.GetComponent<CardEntry>();
             cardEntry.cardEntry.frontSprite.sprite = cardPropertiesList[i].cardSprite;
             cardEntry.cardEntry.cardIndex = cardPropertiesList[i].cardIndex;
+            cardEntry.cardEntry.cardPoint = cardPropertiesList[i].cardPoint;
             cardPrefabs.Add(cardEntry);
             i++;
         }
@@ -96,8 +101,13 @@ public class CardController : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.5f);
         if (selectedCards[0].cardEntry.cardIndex == selectedCards[1].cardEntry.cardIndex)
         {
-            Debug.Log("Match found!");
-           
+            
+            comboCount++;
+            PlayerData.Point += (selectedCards[0].cardEntry.cardPoint)*comboCount;
+            UIManager.instance.pointCount.text = PlayerData.Point.ToString();
+            UIManager.instance.comboCount.text = comboCount.ToString();
+            Debug.Log("Match found!"+selectedCards[0].cardEntry.cardPoint+"       "+ comboCount );
+            
             foreach (var selectedCard in selectedCards)
             {
                 cardPrefabs.Remove(selectedCard);
@@ -111,6 +121,8 @@ public class CardController : MonoBehaviour
         }
         else
         {
+            comboCount = 0;
+            UIManager.instance.comboCount.text = comboCount.ToString();
             Debug.Log("No match found!");
             foreach (var selectedCard in selectedCards)
             {

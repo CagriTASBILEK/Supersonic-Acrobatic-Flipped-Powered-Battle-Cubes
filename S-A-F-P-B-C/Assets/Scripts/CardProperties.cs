@@ -10,5 +10,6 @@ public class CardProperties : ScriptableObject
     [SerializeField] public GameObject cardPrefab;
     [SerializeField] public String cardName;
     [SerializeField] public int cardIndex;
+    [SerializeField] public int cardPoint;
     [SerializeField] public Sprite cardSprite;
 }
