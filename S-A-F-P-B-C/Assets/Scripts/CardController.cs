@@ -14,6 +14,8 @@ public class CardController : MonoBehaviour
     [SerializeField] private List<CardEntry> cardPrefabs = new List<CardEntry>();
     [SerializeField] private List<CardEntry> selectedCards = new List<CardEntry>();
     private Object[] cardDatas;
+    private static readonly int Open = Animator.StringToHash("CardOpen");
+    private static readonly int Close = Animator.StringToHash("CardClose");
 
     void Awake() => instance = this;
 
@@ -78,16 +80,20 @@ public class CardController : MonoBehaviour
         }
         
         selectedCards.Add(selectedCard);
-
+        var cardAnimator = selectedCard.gameObject.GetComponent<Animator>();
+        
+        cardAnimator.SetTrigger(Open);
+        
         if (selectedCards.Count == 2)
         {
-           CheckMatch(); 
+          StartCoroutine( CheckMatch()); 
         }
     }    
     
     
-    private void CheckMatch()
+    private IEnumerator CheckMatch()
     {
+        yield return new WaitForSecondsRealtime(0.5f);
         if (selectedCards[0].cardEntry.cardIndex == selectedCards[1].cardEntry.cardIndex)
         {
             Debug.Log("Match found!");
@@ -106,9 +112,13 @@ public class CardController : MonoBehaviour
         else
         {
             Debug.Log("No match found!");
+            foreach (var selectedCard in selectedCards)
+            {
+                selectedCard.gameObject.GetComponent<Animator>().SetTrigger(Close);
+            }
         }
-        
         selectedCards.Clear();
+        
     }
 
 
